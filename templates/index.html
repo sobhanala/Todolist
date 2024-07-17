@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Todo List</title>
+    <link rel="stylesheet" href="/static/css/styles.css">
+</head>
+<body>
+    <h1>Todo List</h1>
+    
+    <form id="addTaskForm">
+        <input type="text" id="taskName" placeholder="Add a new task" required>
+        <input type="datetime-local" id="taskTime" required>
+        <label>
+            <input type="checkbox" id="taskDone"> Done
+        </label>
+        <button type="submit">Add Task</button>
+    </form>
+
+    <ul id="taskList">
+        {{ range . }}
+            <li id="task-{{ .ID }}">
+                <span>{{ .Name }} - {{ .Time }} - Done: {{ .Done }}</span>
+                <button onclick="deleteTask('{{ .ID }}')">Delete</button>
+                <button onclick="updateTask('{{ .ID }}', '{{ .Name }}', '{{ .Time }}', {Done })">Update</button>
+            </li>
+        {{ else }}
+            <li>No tasks available</li>
+        {{ end }}
+    </ul>
+
+    <script src="/static/js/scripts.js"></script>
+</body>
+</html>
