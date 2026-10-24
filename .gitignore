@@ -1,0 +1,9 @@
+
+
+# Local development files
+.env
+.env.*
+!.env.example
+*.log
+/tod
+/tod.exe

@@ -2,6 +2,7 @@ package db
 
 import (
 	"fmt"
+	"os"
 
 	"github.com/sobhan/tod/entitys"
 	"gorm.io/driver/postgres"
@@ -12,17 +13,24 @@ type Database struct {
 	DB *gorm.DB
 }
 
-const (
-	user     = "postgres"
-	password = "Ala.13495782"
-	dbname   = "todo"
-	port     = "5432"
-	host     = "localhost"
-)
+func envOrDefault(key, fallback string) string {
+	if value := os.Getenv(key); value != "" {
+		return value
+	}
+	return fallback
+}
 
 func NewDatabase() (*Database, error) {
+	password := os.Getenv("PGPASSWORD")
+	if password == "" {
+		return nil, fmt.Errorf("PGPASSWORD must be set")
+	}
 	dsn := fmt.Sprintf("host=%s user=%s password=%s dbname=%s port=%s sslmode=disable",
-		host, user, password, dbname, port)
+		envOrDefault("PGHOST", "localhost"),
+		envOrDefault("PGUSER", "postgres"),
+		password,
+		envOrDefault("PGDATABASE", "todo"),
+		envOrDefault("PGPORT", "5432"))
 
 	db, err := gorm.Open(postgres.Open(dsn), &gorm.Config{})
 	if err != nil {

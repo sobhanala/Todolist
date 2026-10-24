@@ -1,9 +1,13 @@
 package main
 
 import (
+	"log"
+
 	"github.com/sobhan/tod/router"
 )
 
 func main() {
-	router.SetupRouter()
+	if err := router.SetupRouter(); err != nil {
+		log.Fatal(err)
+	}
 }
